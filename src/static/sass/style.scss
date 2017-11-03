@@ -1,0 +1,176 @@
+
+@charset "UTF-8";
+
+@import "sassCore/core/setting";
+@import "sassCore/core/css3";
+@import "sassCore/core/mixin";
+@import "sassCore/core/reset";
+
+@mixin center_vh($width,$height){
+  width: $width;
+  height: $height;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -($width/2);
+  margin-top: -($height/2);
+}
+%center_img{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%,-50%,0);
+}
+@mixin posa_lt($left:0,$top:0){
+  position: absolute;
+  left: $left;
+  top: $top;
+}
+@mixin posa_whlt($width,$height,$left:0,$top:0){
+  width: $width;
+  height: $height;
+  position: absolute;
+  left: $left;
+  top: $top;
+}
+
+%wh_100{
+  width: 100%;
+  height: 100%;
+}
+%posa_lt0{
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.hide{
+  display: none;
+}
+.full{
+  @extend %wh_100;
+  @extend %posa_lt0;
+}
+a{
+  text-decoration: none;
+  color: #333;
+  &:hover{
+    color: #f33;
+  }
+}
+.hide{
+  display: none!important;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+*,*::after,*::before{
+  box-sizing: border-box;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
+  -webkit-tap-highlight-color:transparent;
+}
+
+
+input[type="button"], input[type="submit"], input[type="reset"] {
+
+-webkit-appearance: none;
+
+}
+
+textarea {  -webkit-appearance: none;}   
+
+
+html,body{
+  height: 100%;
+  overflow: hidden;
+}
+
+body { 
+  font-family: "Microsoft YaHei","\5fae\8f6f\96c5\9ed1";
+  font-size: 14px; 
+  width: 100%;
+  background:#eaebee;
+  color: #405261;
+  padding-left: 5%;
+}
+
+
+
+#main{
+  display: flex;
+  width: 1000px;
+  height: 100%;
+  margin: 0 auto;
+  flex-direction:  column;
+  align-items: flex-start;
+}
+
+.can-wrap{
+  background:#fff;
+  canvas{
+    width: 100%; 
+    height: auto;
+  }
+}
+.code-wrap{
+  width: 1000px;
+  margin: 0 auto;
+
+  pre{
+    width: 1000px;
+    max-height: 400px;
+    overflow: auto;
+    margin-top: 30px;
+    code{
+      padding-left: 0;
+    }
+  }
+}
+
+.tes{
+  opacity: 0.3
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* 
+
+
+
+《《《《《《摸摸情况》》》》》》》
+1.上家公司在哪？
+2.你负责哪一块工作。
+3.项目展示一下，特别是移动端
+4.说说你其中两个项目，项目的流程，遇到的问题&解决方法
+
+
+《《《《《《基础 》》》》》》
+0.js、css、html、和 对应的兼容问题
+1. jquery 、ajax、跨域、
+2. 与咱最密切相关的插件 swiper 、 iscroll 、 
+3 . 然后是咱遇到的实际问题，让他说说解决方法
+    3.1 做过移动端吗？ 你们是如何适配屏幕尺寸的？
+    3.2 swiper里面如果有链接 但是我点击不了，是什么原因？ iscroll ，里面的连接也是点击无效，是什么原因，怎么解决的？》
+    3.3 swiper 的翻页h5，翻到某页，对应动画启动，这个怎么做。
+
+
+
+《《《《《《高级高级高级高级》》》》 
+1 > 问问对angular的理解，和普通页面是什么区别 （这个我没怎么学，真的不太好用，和这个类似的有 vue、react,这俩最火，也最好用）
+2 > 版本管理工具有哪些(主要是svn和git,git是目前最先进，用的人最多的一种，压倒性优势)？ git的常用命令有哪些？ 和SVN什么区别？
+3 > 自动化工具有哪些？ 会用gulp吗？ webpack呢？ 
+4 > css预编译器有哪些，怎么编译？（sass 、 less）
+5 > es6 有哪些新API，字符串、数组、函数，有哪些拓展，请举例  */

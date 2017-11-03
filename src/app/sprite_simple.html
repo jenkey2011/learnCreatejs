@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>sprite_simple</title>
+  <link rel="stylesheet" href="../static/css/style.css">
+  <link rel="stylesheet" href="../libs/css/monokai-sublime.css">
+  <script charset="utf-8" src="../libs/js/easeljs-NEXT.min.js"></script>
+  <script charset="utf-8" src="../libs/js/preloadjs-NEXT.min.js"></script>
+  <script charset="utf-8" src="../libs/js/soundjs-NEXT.min.js"></script>
+  <script charset="utf-8" src="../libs/js/tweenjs-NEXT.min.js"></script>
+  <script charset="utf-8" src="../libs/js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body>
+  <div id="main">
+    <div class="can-wrap">
+      <canvas width="1000" height="400" id='myCanvas'></canvas>
+    </div>
+    <div class="code-wrap">
+      <pre>
+        <code class="javascript" id='show-code'>
+          
+        </code>
+      </pre>
+    </div>
+  </div>
+  <script charset="utf-8" type='text/html' id='code'>
+  <!-- <script charset="utf-8"> -->
+    var can = document.getElementById('myCanvas');
+    var stage = new createjs.Stage(can);
+
+    var spriteSheet = new createjs.SpriteSheet({
+      framerate:30,
+      "images":['../static/images/spritesheet_grant.png'],
+      "frames":{
+        "width":165,
+        "height":292,
+        "regX":82,
+        "regY":146,
+        "count":64
+      },
+      "animations":{
+        "run":[0,25,"run",1.5],
+        "jump":[26,63,"run"]
+      }
+    })
+
+    spriteSheet.on('complete',function(event){
+      console.log('complete',event);
+    })
+
+    spriteSheet.on('error',function (event) {
+      console.log('error',event);
+    })
+
+    var grant = new createjs.Sprite(spriteSheet,'run');
+    grant.x = can.width / 2;
+    grant.y = can.height / 2;
+
+    stage.addChild(grant);
+
+    var fps = new createjs.Text('','20px Arial' , 'lime');
+      fps.x = 20;
+      fps.y = 20;
+    stage.addChild(fps);
+
+    createjs.Ticker.timingMode = createjs.Ticker.RAF;
+    createjs.Ticker.addEventListener('tick',handle);
+
+    function handle () {
+      fps.text = Math.round(createjs.Ticker.getMeasuredFPS()) + ' fps' ;
+      stage.update();
+    }
+
+  </script>
+  <script charset="utf-8">
+    var code = document.getElementById('code').innerHTML;
+    var showCode = document.getElementById('show-code').innerHTML = code;
+    var run =  eval(code);
+    var run = new Function(code)();
+  </script>
+</body>
+</html>

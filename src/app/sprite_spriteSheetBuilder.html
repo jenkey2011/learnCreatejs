@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>sprite_spriteSheetBuilder</title>
+  <link rel="stylesheet" href="../static/css/style.css">
+  <link rel="stylesheet" href="../libs/css/monokai-sublime.css">
+  <script charset="utf-8" src="../libs/js/easeljs-NEXT.min.js"></script>
+  <script charset="utf-8" src="../libs/js/preloadjs-NEXT.min.js"></script>
+  <script charset="utf-8" src="../libs/js/soundjs-NEXT.min.js"></script>
+  <script charset="utf-8" src="../libs/js/tweenjs-NEXT.min.js"></script>
+  <script charset="utf-8" src="../libs/js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body>
+  <div id="main">
+    <div class="can-wrap">
+      <canvas width="1000" height="400" id='myCanvas'></canvas>
+    </div>
+    <div class="code-wrap">
+      <pre>
+        <code class="javascript" id='show-code'>
+          
+        </code>
+      </pre>
+    </div>
+  </div>
+  <!-- <script charset="utf-8" type='text/html' id='code'> -->
+  <script charset="utf-8">
+    var canvas,stage;
+  //find canvas and load images, wait for last image to load
+    canvas = document.getElementById("myCanvas");
+    stage = new createjs.Stage(canvas);
+
+    // set up a couple of display objects which will act as source material, and add them to the stage:
+    var circle = new createjs.Shape();
+    circle.graphics.beginFill("#F00").drawCircle(0, 0, 30);
+        //By default swapping between Stage for StageGL will not allow for vector drawing operation such as BitmapFill, useless you cache your shape.
+    circle.cache(-30, -30, 60, 60);
+    circle.setTransform(100, 90);
+
+    var square = new createjs.Container();
+    var squareBg = square.addChild(new createjs.Shape());
+    squareBg.graphics.beginFill("#00F").drawRect(0, 0, 80, 80);
+
+    var squareFld = square.addChild(new createjs.Text("1", "bold 72px Arial", "#9BF"));
+    squareFld.textBaseline = "top";
+    squareFld.textAlign = "center";
+    squareFld.x = 40;
+    square.setTransform(150, 50);
+    // we'll define the bounds of this shape here, and it will be used when we addFrame:
+    square.bounds = new createjs.Rectangle(0, 0, 80, 80);
+        //By default swapping between Stage for StageGL will not allow for vector drawing operation such as BitmapFill, useless you cache your shape.
+        square.cache(-0, -0, 80, 80);
+
+    stage.addChild(circle, square);
+
+    // create the sprite sheet builder:
+    var builder = new createjs.SpriteSheetBuilder();
+
+    // add the circle as a frame, specify the bounds to draw, and grab the frame index:
+    var index = builder.addFrame(circle, new createjs.Rectangle(-30, -30, 60, 60));
+    // add a named animation using the frame index:
+    builder.addAnimation("circle", index);
+
+    // add the square as a sequence of frames, each with a different number in the text field:
+    var frames = [];
+    for (var i = 0; i < 5; i++) {
+      // we're defining a setup function that will update the text before each frame draw.
+      // the setup function will be called right before the draw, and passed the setup params "i":
+      index = builder.addFrame(square, null, 1, function (target, data) {
+        squareFld.text = data;
+                //By default swapping between Stage for StageGL will not allow for vector drawing operation such as BitmapFill, useless you cache your shape.
+                square.updateCache(-0, -0, 80, 80);
+      }, i);
+      // save off the index of each frame in order to use when defining the animation:
+      frames.push(index);
+
+    }
+    // create an animation named square that comprises all of the frames we just added:
+    // we're also telling it to loop the animation and setting a frequency so it updates every 8 ticks:
+    builder.addAnimation("square", frames, true, 8);
+
+    // run the build operation, and grab the resulting sprite sheet:
+    // we could also do this asynchronously with buildAsync(...)
+    var spriteSheet = builder.build();
+
+    // create our bitmap animations using the generated sprite sheet, and put them on stage:
+    var circle2 = new createjs.Sprite(spriteSheet, "circle");
+    circle2.setTransform(100, 90 + 200);
+    stage.addChild(circle2);
+
+    var square2 = new createjs.Sprite(spriteSheet, "square");
+    square2.setTransform(150, 50 + 200);
+    stage.addChild(square2);
+
+    // add in the generated spritesheet image for demo purposes:
+    stage.addChild(new createjs.Bitmap(spriteSheet._images[0])).set({x: 75, y: 150});
+
+    // we want to do some work before we update the canvas,
+    // otherwise we could use Ticker.addEventListener("tick", stage);
+    createjs.Ticker.addEventListener("tick", stage);
+
+
+  </script>
+  <script charset="utf-8">
+   /* var code = document.getElementById('code').innerHTML;
+    var showCode = document.getElementById('show-code').innerHTML = code;
+    var run =  eval(code);
+    var run = new Function(code)();*/
+  </script>
+</body>
+</html>
